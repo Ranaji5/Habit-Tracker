@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<!--suppress GrazieInspection, XmlHighlighting -->
+<html>
+
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Healthy Habits</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+<body>
+        <div class="navbar">
+            <div class="navbar-left">
+                    <div class="navbar-items">
+                        <div class="navbar-item">
+                            <a class="navbar-link" href="http://justinm.tech">Home</a>
+                        </div>
+                        <div class="navbar-item">
+                            <a class="nav-link" href="http://justinm.tech/habits">Habits</a>
+                        </div>
+                        <div class="navbar-item-active">
+                            <a class="nav-link" href="http://justinm.tech/visualizer">Visualizer</a>
+                        </div>
+                    </div>
+            </div>
+            <div class="navbar-right">
+                <div class="dropdown">
+                    <div class="navbar-items">
+                        <div class="navbar-item" th:object="${user}">
+                            <a class="navbar-link" th:text="${user.username}"></a>
+                        </div>
+                    <div class="dropdown-content">
+                        <a href="http://justinm.tech/logout">Logout</a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-wrapper">           
+            <div class="section" id="header">
+                <div class="section-img" id="img-header" style="background-image: url(images/cover2.jpg)"></div>                 
+                    <h1>Visualizer</h1>
+                        <div class="section-text" id="header-text">
+                            <h3>Track your habits!</h3>
+                        </div>
+            </div>
+            <div class="section" id="about">
+                    <h1>My Habit Graph</h1>
+                <div class="section-content" id="habit-graph">
+                    <div class="graph-container" align="center">
+                        <div id="graph-container" style="width: 900px; height: 600px; margin: 0 auto"></div>
+                    </div>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+            <!-- Latest compiled and minified JavaScript -->
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script src="https://code.highcharts.com/highcharts.js"></script>
+            <script src="https://code.highcharts.com/modules/exporting.js"></script>
+            <script type="text/javascript" th:inline="javascript">
+            /*<![CDATA[*/
+                let data = [];
+                let userHabits = [[${userHabits}]];
+            /*]]>*/
+            console.log(userHabits);
+
+            let keys = Object.keys(userHabits);
+
+            for (const key of keys) {
+                let habit = {
+                    name: userHabits[key].name,
+                    data: []
+                };
+                const ratings = userHabits[key].ratings;
+                for (let y = 0; y < ratings.length; y++) {
+                    let habitData = [userHabits[key].dates[y], userHabits[key].ratings[y]];
+                    habit.data.push(habitData);
+                }
+            data.push(habit);
+            }
+            console.log(data);
+
+            $(function(){
+            Highcharts.chart('graph-container', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: 'Habits'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                     type: 'datetime',
+                     title: {
+                        text: 'Time'
+                     },
+                     labels: {
+                        format: '{value:%b %e}'
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    max: 10,
+                    title: {
+                        text: 'Satisfaction'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y}/10</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+
+                legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom'
+
+              },
+
+                series: data
+
+                });
+            });
+                    </script>
+                </div>
+            </div>
+
+            <div class="footer">
+                    <div class="footer-content">
+                        <div class="footer-links">
+                            <div class="footer-items"> 
+                                <div class="footer-copyright">
+                                <p>Copyright © 2022 Justin Mitchell</p>
+                            </div>                            
+                        
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </body>
+</html>

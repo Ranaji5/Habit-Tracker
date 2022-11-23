@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html>
+
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Healthy Habits</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+<body>
+        <div class="navbar">
+            <div class="navbar-left">
+                    <div class="navbar-items">
+                        <div class="navbar-item">
+                            <a class="navbar-link" href="http://justinm.tech">Home</a>
+                        </div>
+                        <div class="navbar-item-active">
+                            <a class="nav-link" href="http://justinm.tech/habits">Habits</a>
+                        </div>
+                        <div class="navbar-item">
+                            <a class="nav-link" href="http://justinm.tech/visualizer">Visualizer</a>
+                        </div>
+                    </div>
+            </div>
+            <div class="navbar-right">
+                <div class="dropdown">
+                    <div class="navbar-items">
+                          <div class="navbar-item" th:object="${user}">
+                            <a class="navbar-link" th:text="${user.username}"></a>
+                        </div>
+                        <div class="dropdown-content">
+                            <a href="http://justinm.tech/logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-wrapper">           
+            <div class="section" id="header">
+                <div class="section-img" id="img-header" style="background-image: url(images/cover2.jpg)"></div>
+                    <h1>Habits</h1>
+                        <div class="section-text" id="header-text">
+                            <h3>Add or remove habits to track..</h3>
+                        </div>
+            </div>
+            <div class="section" id="habits-section">
+                <h1 class="section-text" id="habits-header">ADD HABIT</h1>
+                <div class="section-text" id="about-text-habits">
+                    <form action="#" th:action="@{/habits}" method="post" th:object="${habit}">
+                        <div class="form-group">
+                            <label for="inputHabitName">Name </label>
+                                <input type="text" th:field="*{name}" class="form-control" id="inputHabitName" required minlength="3" maxlength="32"/>
+
+                            <label for="inputHabitRating">Rating </label>
+<!--                                <select id="rating" name="rating" size="10" id="inputHabitRating" th:field="*{ratings}">
+                                    <option th:value="1">1</option>
+                                    <option th:value="2">2</option>
+                                    <option th:value="3">3</option>
+                                    <option th:value="4">4</option>
+                                    <option th:value="5">5</option>
+                                    <option th:value="6">6</option>
+                                    <option th:value="7">7</option>
+                                    <option th:value="8">8</option>
+                                    <option th:value="9">9</option>
+                                    <option th:value="10">10</option>
+                                </select>-->
+                                <input type="text" th:field="*{ratings}" class="form-control" id="inputHabitRating" aria-valuemin="0" aria-valuemax="10"/>
+                            <label for="action">Action </label>
+                                <select id="action" name="action" size="2" th:field="*{habitType}">
+                                    <option th:value="add">Add</option>
+                                    <option th:value="remove">Remove</option>
+                                </select>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                    <div class="section" id="habits-list" th:object="${user}">
+                        <ul>
+                            <li th:each="key: ${user.habits.keySet()}">
+                                <p th:text="${key}"></p>
+                            </li>
+                        </ul>
+                        <!--<p th:text="*{habits}"></p>-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                    <div class="footer-content">
+                        <div class="footer-links">
+                            <div class="footer-items"> 
+                                <div class="footer-copyright">
+                                <p>Copyright © 2022 Justin Mitchell</p>
+                            </div>                            
+                        
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </body>
+</html>
